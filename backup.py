@@ -22,7 +22,8 @@ UNITS_MAPPING = [
 ]
 
 
-def pretty_size(bytes, units=UNITS_MAPPING):
+def get_unit(bytes):
+    units=UNITS_MAPPING
     for factor, suffix in units:
         if bytes >= factor:
             break
@@ -46,16 +47,16 @@ def backup():
             if os.path.isdir(i):
                 for ele in os.scandir(i):
                     size += os.path.getsize(ele)
-                else:
-                    size += os.path.getsize(i)
-                combined_size = combined_size + size
+            elif os.path.isfile(i):
+                size += os.path.getsize(i)
+            combined_size = combined_size + size
         else:
             sys.stdout.write("\033[1;31m")
             print("Folder does not exist and wont be included in the backup: " + i)
             sys.stdout.write("\033[0;0m")
     sys.stdout.write("\033[1;30m")
     print(" * Combined size is: ", str(combined_size),
-          "bytes", " Or: ", pretty_size(combined_size))
+          "bytes", " Or: ", get_unit(combined_size))
     sys.stdout.write("\033[0;0m")
     choice = input(" | Do you want to continue? (y/n): ")
     if choice == "y":
@@ -75,8 +76,8 @@ def backup():
                 str(datetime.now().strftime("%Y-%m-%d"))
             if os.path.exists(inputpath):
                 sys.stdout.write("\033[1;31m")
-                print(f" ! '/Backup-" + str(datetime.now().strftime("%Y-%m-%d")
-                                            ) + "' Backup folder already exists")
+                print(" ! '/Backup-" + str(datetime.now().strftime("%Y-%m-%d")
+                                           ) + "' Backup folder already exists")
                 sys.stdout.write("\033[0;0m")
                 choice = input(
                     " | Do you want it to be erased? and replaced with a new one? (y/n): ")
@@ -124,12 +125,12 @@ else:
     elif choice == "2":
         combined_size = 0
         files = 0
-        pathExists = 0
+        path_Exists = 0
         for i in backup_dir:
             i = i.replace('"', '')
             size = 0
             if os.path.exists(i):
-                pathExists += 1
+                path_Exists += 1
                 if os.path.isdir(i):
                     for ele in os.scandir(i):
                         size += os.path.getsize(ele)
@@ -139,19 +140,20 @@ else:
                     files += 1
                 combined_size = combined_size + size
                 sys.stdout.write("\033[0;32m")
-                print(f"Checking: {i} | " + str(size) + " bytes", " Or: ", pretty_size(size),
-                       " Exists: " + str(os.path.exists(i)))
+                print(f"Checking: {i} | " + str(size) + " bytes", " Or: ", get_unit(size),
+                      " Exists: " + str(os.path.exists(i)))
                 sys.stdout.write("\033[0;0m")
             else:
                 sys.stdout.write("\033[1;31m")
-                print(f"Checking: {i} | " + str(size) + " bytes", " Or: ", pretty_size(size),
-                       " Exists: " + str(os.path.exists(i)))
+                print(f"Checking: {i} | " + str(size) + " bytes", " Or: ", get_unit(size),
+                      " Exists: " + str(os.path.exists(i)))
                 sys.stdout.write("\033[0;0m")
         print("------------------------")
         sys.stdout.write("\033[1;36m")
         print("* Backup Information")
-        print(" | Combined size is: ", str(combined_size), "bytes", "\n | Or: ", pretty_size(
-            combined_size), "\n | Files: " + str(files) + "\n | Paths: " + str(len(backup_dir)) + "\n | Paths Exist: " + str(pathExists) + "/" + str(len(backup_dir)))
+        print(" | Combined size is: ", str(combined_size), "bytes", "\n | Or: ", get_unit(
+            combined_size), "\n | Files: " + str(files) + "\n | Paths: " + str(len(backup_dir)) + 
+            "\n | Paths Exist: " + str(path_Exists) + "/" + str(len(backup_dir)))
 
     elif choice == "3":
         print("Exited..")
