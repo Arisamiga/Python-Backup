@@ -1,4 +1,10 @@
 # Python-Backup
+ <a href="https://github.com/Arisamiga/Python-Backup//issues">
+   <img alt="Issues" src="https://img.shields.io/github/issues/Arisamiga/Python-Backup?color=0088ff" />
+  </a>
+  
+  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7c99216ecdd2453fa10acdc485f01187)](https://www.codacy.com/gh/Arisamiga/Python-Backup/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Arisamiga/Python-Backup&amp;utm_campaign=Badge_Grade)
+  
 A Script made in Python to Backup Folders and its files.
 
 ### Works Using the following Libraries
