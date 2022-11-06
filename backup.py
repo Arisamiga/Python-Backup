@@ -22,12 +22,12 @@ UNITS_MAPPING = [
 ]
 
 
-def get_unit(bytes):
+def get_unit(bytes_size):
     units=UNITS_MAPPING
     for factor, suffix in units:
-        if bytes >= factor:
+        if bytes_size >= factor:
             break
-    amount = int(bytes / factor)
+    amount = int(bytes_size / factor)
 
     if isinstance(suffix, tuple):
         singular, multiple = suffix
@@ -125,12 +125,12 @@ else:
     elif choice == "2":
         combined_size = 0
         files = 0
-        path_Exists = 0
+        path_exists = 0
         for i in backup_dir:
             i = i.replace('"', '')
             size = 0
             if os.path.exists(i):
-                path_Exists += 1
+                path_exists += 1
                 if os.path.isdir(i):
                     for ele in os.scandir(i):
                         size += os.path.getsize(ele)
@@ -152,8 +152,8 @@ else:
         sys.stdout.write("\033[1;36m")
         print("* Backup Information")
         print(" | Combined size is: ", str(combined_size), "bytes", "\n | Or: ", get_unit(
-            combined_size), "\n | Files: " + str(files) + "\n | Paths: " + str(len(backup_dir)) + 
-            "\n | Paths Exist: " + str(path_Exists) + "/" + str(len(backup_dir)))
+            combined_size), "\n | Files: " + str(files) + "\n | Paths: " + str(len(backup_dir)) +
+            "\n | Paths Exist: " + str(path_exists) + "/" + str(len(backup_dir)))
 
     elif choice == "3":
         print("Exited..")
