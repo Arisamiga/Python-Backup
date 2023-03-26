@@ -21,6 +21,8 @@ A Script made in Python to Backup Folders and its files.
 
 + time ( Comes Installed with Python )
 
++ math ( Comes Installed with Python )
+
 ## Installation
 ```
 You have to install Python and Git
