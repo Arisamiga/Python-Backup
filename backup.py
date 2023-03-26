@@ -5,38 +5,22 @@ import os
 import sys
 import time
 from tqdm import tqdm
+import math
 
 # Paths of things you want to backup
 backup_dir = [
     r"C:\Users\"",
 ]
 
-# bytes pretty-printing
-UNITS_MAPPING = [
-    (1 << 50, ' PB'),
-    (1 << 40, ' TB'),
-    (1 << 30, ' GB'),
-    (1 << 20, ' MB'),
-    (1 << 10, ' KB'),
-    (1, (' byte', ' bytes')),
-]
 
-
-def get_unit(bytes_size):
-    units=UNITS_MAPPING
-    for factor, suffix in units:
-        if bytes_size >= factor:
-            break
-    amount = int(bytes_size / factor)
-
-    if isinstance(suffix, tuple):
-        singular, multiple = suffix
-        if amount == 1:
-            suffix = singular
-        else:
-            suffix = multiple
-    return str(amount) + suffix
-
+def get_unit(size_bytes):
+   if size_bytes == 0:
+       return "0 B"
+   size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+   i = int(math.floor(math.log(size_bytes, 1024)))
+   p = math.pow(1024, i)
+   s = round(size_bytes / p, 2)
+   return "%s %s" % (s, size_name[i])
 
 def backup():
     combined_size = 0
@@ -132,9 +116,10 @@ else:
             if os.path.exists(i):
                 path_exists += 1
                 if os.path.isdir(i):
-                    for ele in os.scandir(i):
-                        size += os.path.getsize(ele)
-                        files += 1
+                    for root, dirs, files_list in os.walk(i):
+                        for file in files_list:
+                            size += os.path.getsize(os.path.join(root, file))
+                            files += 1
                 else:
                     size += os.path.getsize(i)
                     files += 1
